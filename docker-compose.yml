@@ -1,7 +1,12 @@
-rsimples:
-  image: php:7.2
-  command: php -S 0.0.0.0:8000 /app/public/index.php
-  ports:
-    - "8000:8000"
-  volumes:
-    - .:/app
+version: '2'
+services:
+    rsimples:
+        build: .
+        image: rsimples
+        container_name: rsimples
+        ports:
+            - "8000:8000"
+            - "9000:9000"
+        volumes:
+            - .:/app
+        command: php -S 0.0.0.0:8000 /app/public/index.php
