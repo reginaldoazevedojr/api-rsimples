@@ -4,6 +4,7 @@ services:
         build: .
         image: rsimples
         container_name: rsimples
+        network_mode: "host"
         ports:
             - "8000:8000"
             - "9000:9000"
