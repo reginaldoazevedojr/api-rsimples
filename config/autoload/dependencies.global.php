@@ -21,6 +21,8 @@ return [
         // Use 'factories' for services provided by callbacks/factory classes.
         'factories'  => [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
+            Doctrine\Common\Cache\Cache::class => App\Container\DoctrineArrayCacheFactory::class,
+            Doctrine\ORM\EntityManager::class => App\Container\DoctrineFactory::class,
         ],
     ],
 ];

@@ -35,8 +35,6 @@ class HomePageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $teste[] = 'teste1';
-        $teste[] = 'teste2';
         if (! $this->template) {
             return new JsonResponse([
                 'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
