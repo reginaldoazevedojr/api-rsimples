@@ -35,10 +35,10 @@ class Person extends AbstractEntity
     private $mail;
 
     /**
-     * @var User
-     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="person")
+     * @var OauthUsers
+     * @ORM\OneToOne(targetEntity="App\Entity\OauthUsers", mappedBy="person")
      */
-    private $user;
+    private $oauthUser;
 
     /**
      * @return int
@@ -81,18 +81,18 @@ class Person extends AbstractEntity
     }
 
     /**
-     * @return User
+     * @return OauthUsers
      */
-    public function getUser(): ?User
+    public function getOauthUser(): OauthUsers
     {
-        return $this->user;
+        return $this->oauthUser;
     }
 
     /**
-     * @param User $user
+     * @param OauthUsers $oauthUser
      */
-    public function setUser(User $user): void
+    public function setOauthUser(OauthUsers $oauthUser): void
     {
-        $this->user = $user;
+        $this->oauthUser = $oauthUser;
     }
 }

@@ -17,7 +17,6 @@ class OauthScopes extends \App\Entity\AbstractEntity
      *
      * @ORM\Column(name="scope", type="string", length=2000, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $scope;
 

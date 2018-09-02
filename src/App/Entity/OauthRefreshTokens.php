@@ -17,7 +17,6 @@ class OauthRefreshTokens extends \App\Entity\AbstractEntity
      *
      * @ORM\Column(name="refresh_token", type="string", length=40, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $refreshToken;
 
