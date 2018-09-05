@@ -35,4 +35,5 @@ use Zend\Expressive\MiddlewareFactory;
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/version', App\Handler\VersionHandler::class, 'api.version');
+    $app->post('/api/oauth', App\Handler\OauthHandler::class, 'api.oauth');
 };

@@ -17,7 +17,6 @@ class OauthJwt extends \App\Entity\AbstractEntity
      *
      * @ORM\Column(name="client_id", type="string", length=80, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $clientId;
 

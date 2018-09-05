@@ -13,7 +13,9 @@ return [
     'dependencies' => [
         'factories' => [
             App\Handler\LoginHandler::class => App\Handler\LoginHandlerFactory::class,
+            App\Handler\OauthHandler::class => App\Handler\OauthHandlerFactory::class,
             App\Handler\VersionHandler::class => App\Handler\VersionHandlerFactory::class,
+            App\Middleware\CorsManagerMiddleware::class => App\Middleware\CorsManagerMiddlewareFactory::class,
         ],
     ],
 ];

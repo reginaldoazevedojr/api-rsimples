@@ -23,6 +23,7 @@ return [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             Doctrine\Common\Cache\Cache::class => App\Container\DoctrineArrayCacheFactory::class,
             Doctrine\ORM\EntityManager::class => App\Container\DoctrineFactory::class,
+            \App\Service\AuthenticationService::class => \App\Service\AuthenticationServiceFactory::class,
         ],
     ],
 ];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -28,15 +30,15 @@ class OauthUsers extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(name="facebook_token", type="string", nullable=true)
+     * @ORM\Column(name="facebook_id", type="string", nullable=true)
      */
-    private $facebookToken;
+    private $facebookId;
 
     /**
      * @var string
-     * @ORM\Column(name="gmail_token", type="string", nullable=true)
+     * @ORM\Column(name="google_id", type="string", nullable=true)
      */
-    private $gmailToken;
+    private $googleId;
 
     /**
      * @var Person
@@ -83,33 +85,33 @@ class OauthUsers extends AbstractEntity
     /**
      * @return string
      */
-    public function getFacebookToken(): string
+    public function getFacebookId(): string
     {
-        return $this->facebookToken;
+        return $this->facebookId;
     }
 
     /**
-     * @param string $facebookToken
+     * @param string $facebookId
      */
-    public function setFacebookToken(string $facebookToken): void
+    public function setFacebookId(string $facebookId): void
     {
-        $this->facebookToken = $facebookToken;
+        $this->facebookId = $facebookId;
     }
 
     /**
      * @return string
      */
-    public function getGmailToken(): string
+    public function getGoogleId(): string
     {
-        return $this->gmailToken;
+        return $this->googleId;
     }
 
     /**
-     * @param string $gmailToken
+     * @param string $googleId
      */
-    public function setGmailToken(string $gmailToken): void
+    public function setGoogleId(string $googleId): void
     {
-        $this->gmailToken = $gmailToken;
+        $this->googleId = $googleId;
     }
 
     /**
