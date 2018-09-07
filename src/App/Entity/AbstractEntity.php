@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Zend\Hydrator\ClassMethods;
@@ -15,9 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractEntity
 {
     /**
-     * @var string
+     * @var OauthUsers
      *
-     * @ORM\Column(name="created_by", type="string", nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\OauthUsers")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="created_by", referencedColumnName="username", nullable=false)
+     * })
      */
     private $createdBy;
 
@@ -29,18 +34,21 @@ abstract class AbstractEntity
     private $createdAt;
 
     /**
-     * @var string
+     * @var OauthUsers
      *
-     * @ORM\Column(name="update_by", type="string", nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\OauthUsers")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="updated_by", referencedColumnName="username", nullable=true)
+     * })
      */
-    private $updateBy;
+    private $updatedBy;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="update_at", type="datetime", nullable=true)
      */
-    private $updateAt;
+    private $updatedAt;
 
     /**
      * AbstractEntity constructor.
@@ -55,17 +63,17 @@ abstract class AbstractEntity
     }
 
     /**
-     * @return string
+     * @return OauthUsers
      */
-    public function getCreatedBy(): string
+    public function getCreatedBy(): OauthUsers
     {
         return $this->createdBy;
     }
 
     /**
-     * @param string $createdBy
+     * @param OauthUsers $createdBy
      */
-    public function setCreatedBy(string $createdBy): void
+    public function setCreatedBy(OauthUsers $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
@@ -87,34 +95,34 @@ abstract class AbstractEntity
     }
 
     /**
-     * @return string
+     * @return OauthUsers
      */
-    public function getUpdateBy(): ?string
+    public function getUpdatedBy(): ?OauthUsers
     {
-        return $this->updateBy;
+        return $this->updatedBy;
     }
 
     /**
-     * @param string $updateBy
+     * @param OauthUsers $updatedBy
      */
-    public function setUpdateBy(string $updateBy): void
+    public function setUpdatedBy(OauthUsers $updatedBy): void
     {
-        $this->updateBy = $updateBy;
+        $this->updatedBy = $updatedBy;
     }
 
     /**
      * @return \DateTime
      */
-    public function getUpdateAt(): ?\DateTime
+    public function getUpdatedAt(): ?\DateTime
     {
-        return $this->updateAt;
+        return $this->updatedAt;
     }
 
     /**
-     * @param \DateTime $updateAt
+     * @param \DateTime $updatedAt
      */
-    public function setUpdateAt(\DateTime $updateAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): void
     {
-        $this->updateAt = $updateAt;
+        $this->updatedAt = $updatedAt;
     }
 }

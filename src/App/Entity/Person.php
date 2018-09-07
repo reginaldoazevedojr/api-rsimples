@@ -48,7 +48,7 @@ class Person extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(name="photo_url", type="string", nullable=true)
+     * @ORM\Column(name="photo_url", type="string", nullable=true, options={"comment":"The photo url from gmail and facebook"})
      */
     private $photoUrl;
 
