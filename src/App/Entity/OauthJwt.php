@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="oauth_jwt")
  * @ORM\Entity
  */
-class OauthJwt extends \App\Entity\AbstractEntity
+class OauthJwt
 {
     /**
      * @var string

@@ -10,23 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Person
  * @package App\Entity
  * @ORM\Entity
- * @ORM\Table(name="person")
  */
 class Person extends AbstractEntity
 {
     /**
      * @var int
      * @ORM\Id
-     * @ORM\Column(name="person_id", type="integer", options={"default"="nextval('person_person_id_seq'::regclass)"})
+     * @ORM\Column(name="person_id", type="integer")
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      */
     private $personId;
 
     /**
      * @var string
-     * @ORM\Column(name="name", type="string", nullable=false)
+     * @ORM\Column(name="first_name", type="string", nullable=false)
      */
-    private $name;
+    private $firstName;
 
     /**
      * @var string
@@ -36,9 +35,9 @@ class Person extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(name="mail", type="string", nullable=false)
+     * @ORM\Column(name="email", type="string", nullable=false, unique=true)
      */
-    private $mail;
+    private $email;
 
     /**
      * @var string
@@ -69,33 +68,33 @@ class Person extends AbstractEntity
     /**
      * @return string
      */
-    public function getName(): string
+    public function getFirstName(): string
     {
-        return $this->name;
+        return $this->firstName;
     }
 
     /**
-     * @param string $name
+     * @param string $firstName
      */
-    public function setName(string $name): void
+    public function setFirstName(string $firstName): void
     {
-        $this->name = $name;
+        $this->firstName = $firstName;
     }
 
     /**
      * @return string
      */
-    public function getMail(): string
+    public function getEmail(): string
     {
-        return $this->mail;
+        return $this->email;
     }
 
     /**
-     * @param string $mail
+     * @param string $email
      */
-    public function setMail(string $mail): void
+    public function setEmail(string $email): void
     {
-        $this->mail = $mail;
+        $this->email = $email;
     }
 
     /**
@@ -104,14 +103,6 @@ class Person extends AbstractEntity
     public function getOauthUser(): OauthUsers
     {
         return $this->oauthUser;
-    }
-
-    /**
-     * @param OauthUsers $oauthUser
-     */
-    public function setOauthUser(OauthUsers $oauthUser): void
-    {
-        $this->oauthUser = $oauthUser;
     }
 
     /**

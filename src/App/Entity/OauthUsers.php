@@ -17,8 +17,8 @@ class OauthUsers extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(name="username", type="string", length=255, nullable=false)
      * @ORM\Id
+     * @ORM\Column(name="username", type="string", length=255, nullable=false)
      */
     private $username;
 
@@ -43,7 +43,7 @@ class OauthUsers extends AbstractEntity
     /**
      * @var Person
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Person", inversedBy="user")
+     * @ORM\OneToOne(targetEntity="App\Entity\Person", inversedBy="oauthUser")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="person_id", referencedColumnName="person_id", nullable=true)
      * })

@@ -2,6 +2,7 @@
 
 namespace App\Container;
 
+use App\Listener\PreControlListener;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Cache\Cache;
@@ -62,6 +63,10 @@ class DoctrineFactory
 
         /** @var EntityManager $entitym */
         $entitym = EntityManager::create($config['doctrine']['connection']['orm_default'], $doctrine);
+
+        $controlEvent = new PreControlListener();
+
+        $entitym->getEventManager()->addEventListener([Events::preUpdate, Events::prePersist], $controlEvent);
 
         return $entitym;
     }

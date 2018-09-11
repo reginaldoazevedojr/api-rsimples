@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="oauth_refresh_tokens")
  * @ORM\Entity
  */
-class OauthRefreshTokens extends \App\Entity\AbstractEntity
+class OauthRefreshTokens
 {
     /**
      * @var string

@@ -24,6 +24,8 @@ return [
             Doctrine\Common\Cache\Cache::class => App\Container\DoctrineArrayCacheFactory::class,
             Doctrine\ORM\EntityManager::class => App\Container\DoctrineFactory::class,
             \App\Service\AuthenticationService::class => \App\Service\AuthenticationServiceFactory::class,
+            \App\Service\PersonService::class => \App\Service\PersonServiceFactory::class,
+            \App\Service\OauthUsersService::class => \App\Service\OauthUsersServiceFactory::class,
         ],
     ],
 ];

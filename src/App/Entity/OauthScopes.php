@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="oauth_scopes")
  * @ORM\Entity
  */
-class OauthScopes extends \App\Entity\AbstractEntity
+class OauthScopes
 {
     /**
      * @var string

@@ -19,7 +19,7 @@ abstract class AbstractEntity
     /**
      * @var OauthUsers
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\OauthUsers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\OauthUsers")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="created_by", referencedColumnName="username", nullable=false)
      * })
@@ -29,14 +29,14 @@ abstract class AbstractEntity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
 
     /**
      * @var OauthUsers
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\OauthUsers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\OauthUsers")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="updated_by", referencedColumnName="username", nullable=true)
      * })
@@ -46,7 +46,7 @@ abstract class AbstractEntity
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="update_at", type="datetime", nullable=true)
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
 

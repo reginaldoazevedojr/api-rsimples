@@ -4,11 +4,12 @@
 namespace App\Service;
 
 use App\Adapter\PdoAdapter;
-use Doctrine\Common\Util\Debug;
+use Doctrine\ORM\EntityManager;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
 use OAuth2\GrantType\RefreshToken;
 use OAuth2\GrantType\UserCredentials;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class AuthenticationServiceFactory
@@ -21,7 +22,7 @@ class AuthenticationServiceFactory
      * @param $container
      * @return AuthenticationService
      */
-    public function __invoke($container)
+    public function __invoke(ContainerInterface $container)
     {
         $config = $container->get('config');
 
@@ -34,7 +35,15 @@ class AuthenticationServiceFactory
         $server->addGrantType(new AuthorizationCode($storage));
         $server->addGrantType(new RefreshToken($storage));
 
-        return new AuthenticationService($server);
+        /** @var PersonService $personSvc */
+        $personSvc = $container->get(PersonService::class);
 
+        /** @var EntityManager $entitym */
+        $entitym = $container->get(EntityManager::class);
+
+        /** @var OauthUsersService $oauthUsersSvc */
+        $oauthUsersSvc = $container->get(OauthUsersService::class);
+
+        return new AuthenticationService($server, $personSvc, $entitym, $oauthUsersSvc);
     }
 }
