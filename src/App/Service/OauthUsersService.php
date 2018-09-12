@@ -35,7 +35,7 @@ class OauthUsersService
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(array $data)
+    public function save(array $data): OauthUsers
     {
         $repository = $this->entitym->getRepository(OauthUsers::class);
 
@@ -43,6 +43,12 @@ class OauthUsersService
         $oauthUserVerify = $repository->findOneBy(['username' => $data['username']]);
 
         if ($oauthUserVerify) {
+            $socialId = $data['facebookId'] ?? $data['googleId'];
+            try {
+                $this->updateIdSocial($oauthUserVerify->getUsername(), $socialId);
+            } catch (\Exception $error) {
+                throw new NotSaveException($error->getMessage(), $error->getCode());
+            }
             return $oauthUserVerify;
         }
 
@@ -52,7 +58,7 @@ class OauthUsersService
         $oauthUsers->setPassword($data['password'] ?? '');
         $oauthUsers->setPerson($data['person']);
         $oauthUsers->setFacebookId($data['facebookId'] ?? '');
-        $oauthUsers->setGoogleId($data['googleId'] ?? '');
+        $oauthUsers->setGoogleId($data[''] ?? '');
 
         try {
             $this->entitym->persist($oauthUsers);
@@ -60,6 +66,36 @@ class OauthUsersService
             return $oauthUsers;
         } catch (\RuntimeException $error) {
             throw new NotSaveException($error->getMessage(), $error->getCode());
+        }
+    }
+
+    /**
+     * @param string $identity
+     * @param string $socialId
+     * @return OauthUsers
+     * @throws \Exception
+     */
+    public function updateIdSocial(string $identity, string $socialId): OauthUsers
+    {
+        $repository = $this->entitym->getRepository(OauthUsers::class);
+
+        /** @var OauthUsers $oauthUser */
+        $oauthUser = $repository->find($identity);
+
+        if (!$oauthUser->getGoogleId()) {
+            $oauthUser->setGoogleId($socialId);
+        }
+
+        if (!$oauthUser->getFacebookId()) {
+            $oauthUser->setFacebookId($socialId);
+        }
+
+        try {
+            $this->entitym->persist($oauthUser);
+            $this->entitym->flush();
+            return $oauthUser;
+        } catch (\Exception $error) {
+            throw new \Exception($error->getMessage(), $error->getCode());
         }
     }
 }
