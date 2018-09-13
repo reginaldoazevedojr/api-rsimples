@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * OauthUsers
  *
  * @ORM\Table(name="oauth_users")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\OauthUsersRepository")
  */
 class OauthUsers extends AbstractEntity
 {

@@ -4,7 +4,7 @@ namespace App\Listener;
 
 use App\Entity\AbstractEntity;
 use App\Entity\OauthUsers;
-use App\Service\UsuarioService;
+use App\Service\UserService;
 use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;

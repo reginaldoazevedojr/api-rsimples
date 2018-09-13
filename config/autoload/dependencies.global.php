@@ -26,6 +26,7 @@ return [
             \App\Service\AuthenticationService::class => \App\Service\AuthenticationServiceFactory::class,
             \App\Service\PersonService::class => \App\Service\PersonServiceFactory::class,
             \App\Service\OauthUsersService::class => \App\Service\OauthUsersServiceFactory::class,
+            \App\Service\UserService::class => \App\Service\UserServiceFactory::class,
         ],
     ],
 ];

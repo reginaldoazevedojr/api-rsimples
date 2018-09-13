@@ -37,4 +37,5 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/api/version', App\Handler\VersionHandler::class, 'api.version');
     $app->post('/api/oauth', App\Handler\OauthHandler::class, 'api.oauth');
     $app->post('/api/oauth-social', App\Handler\OauthSocialHandler::class, 'api.oauth-social');
+    $app->get('/api/user-session', App\Handler\UserSessionHandler::class, 'api.user-session');
 };
