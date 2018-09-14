@@ -43,7 +43,7 @@ class OauthUsers extends AbstractEntity
     /**
      * @var Person
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Person", inversedBy="oauthUser")
+     * @ORM\OneToOne(targetEntity="App\Entity\Person")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="person_id", referencedColumnName="person_id", nullable=true)
      * })
@@ -85,7 +85,7 @@ class OauthUsers extends AbstractEntity
     /**
      * @return string
      */
-    public function getFacebookId(): string
+    public function getFacebookId(): ?string
     {
         return $this->facebookId;
     }
@@ -101,7 +101,7 @@ class OauthUsers extends AbstractEntity
     /**
      * @return string
      */
-    public function getGoogleId(): string
+    public function getGoogleId(): ?string
     {
         return $this->googleId;
     }

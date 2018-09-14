@@ -52,12 +52,6 @@ class Person extends AbstractEntity
     private $photoUrl;
 
     /**
-     * @var OauthUsers
-     * @ORM\OneToOne(targetEntity="App\Entity\OauthUsers", mappedBy="person")
-     */
-    private $oauthUser;
-
-    /**
      * @return int
      */
     public function getPersonId(): int
@@ -95,14 +89,6 @@ class Person extends AbstractEntity
     public function setEmail(string $email): void
     {
         $this->email = $email;
-    }
-
-    /**
-     * @return OauthUsers
-     */
-    public function getOauthUser(): OauthUsers
-    {
-        return $this->oauthUser;
     }
 
     /**

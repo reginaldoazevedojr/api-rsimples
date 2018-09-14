@@ -155,9 +155,12 @@ abstract class AbstractEntity
         $propertiesAbstract = $this->getProperties(AbstractEntity::class);
         $properties = array_merge($propertiesClass, $propertiesAbstract);
 
+        $i = 0;
         foreach ($properties as $property) {
             $annotations = $reader->getPropertyAnnotations($property);
+
             foreach ($annotations as $annotation) {
+
                 if ($annotation instanceof ManyToMany) {
                     continue;
                 }
@@ -170,19 +173,23 @@ abstract class AbstractEntity
                     continue;
                 }
 
-                if ($annotation instanceof ManyToOne &&
-                    (!in_array($annotation->targetEntity, $classes))
-                ) {
-                    $result[$property->name] = $this->getValueManyToOne($property->name, $this);
+                if ($annotation instanceof ManyToOne && !in_array($annotation->targetEntity, $classes)) {
+                    $result[$property->name] = $this->getValueManyToOne($property->name, $this, $classes);
                     continue;
                 }
 
-                if ($annotation instanceof OneToOne) {
+                if ($annotation instanceof OneToOne && !in_array($annotation->targetEntity, $classes)) {
+                    if ($annotation->mappedBy) {
+                        continue;
+                    }
                     $result[$property->name] = $this->getValueOneToOne($property->name, $this);
                     continue;
                 }
 
                 if ($annotation instanceof Column) {
+                    if ($property->name == 'password') {
+                        continue;
+                    }
                     $result [$property->name] = $this->getValueProperty($property->name, $this);
                     continue;
                 }
@@ -195,10 +202,11 @@ abstract class AbstractEntity
     /**
      * @param $name
      * @param $object
+     * @param $classes
      * @return array
      * @throws \Exception
      */
-    private function getValueManyToOne($name, $object)
+    private function getValueManyToOne($name, $object, $classes)
     {
         $method = $this->getNameMethod($name, $object);
         $result = $object->$method();
@@ -207,7 +215,7 @@ abstract class AbstractEntity
             return [];
         }
 
-        return $result->toArray();
+        return $result->toArray($classes);
     }
 
     /**
@@ -235,7 +243,7 @@ abstract class AbstractEntity
      * @return array
      * @throws \Exception
      */
-    private function getValueOneToMany($mapped, $object, array $classes)
+    private function getValueOneToMany($mapped, $object)
     {
 
         $result = [];
@@ -249,7 +257,7 @@ abstract class AbstractEntity
         }
 
         foreach ($collection as $item) {
-            $result[] = $item->toArray($classes);
+            $result[] = $item->toArray();
             continue;
         }
 
@@ -267,10 +275,10 @@ abstract class AbstractEntity
         $method = $this->getNameMethod($name, $object);
 
         if ($object->$method() instanceof \DateTime) {
-            return $object->$method()->format('d/m/Y H:i:s');
+            return $object->$method()->format('d/m/Y H:i:s') ?? '';
         }
 
-        return $object->$method();
+        return $object->$method() ?? '';
     }
 
     /**
@@ -298,7 +306,6 @@ abstract class AbstractEntity
      */
     private function getProperties($class)
     {
-
         $reflector = new \ReflectionClass($class);
         $properties = $reflector->getProperties();
 
