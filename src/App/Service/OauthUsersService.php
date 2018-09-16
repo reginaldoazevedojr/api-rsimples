@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\OauthUsers;
 use App\Exception\NotSaveException;
+use App\Exception\NotUpdateException;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -32,8 +33,7 @@ class OauthUsersService
     /**
      * @param array $data
      * @return OauthUsers
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws NotSaveException
      */
     public function save(array $data): OauthUsers
     {
@@ -47,7 +47,7 @@ class OauthUsersService
             try {
                 $this->updateIdSocial($oauthUserVerify->getUsername(), $socialId);
             } catch (\Exception $error) {
-                throw new NotSaveException($error->getMessage(), $error->getCode());
+                throw new NotSaveException($error->getMessage(), $error->getCode(), $error->getMessage());
             }
             return $oauthUserVerify;
         }
@@ -64,8 +64,8 @@ class OauthUsersService
             $this->entitym->persist($oauthUsers);
             $this->entitym->flush();
             return $oauthUsers;
-        } catch (\RuntimeException $error) {
-            throw new NotSaveException($error->getMessage(), $error->getCode());
+        } catch (\Exception $error) {
+            throw new NotSaveException('Fail saving oauth', $error->getCode(), $error->getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ class OauthUsersService
             $this->entitym->flush();
             return $oauthUser;
         } catch (\Exception $error) {
-            throw new \Exception($error->getMessage(), $error->getCode());
+            throw new NotUpdateException('Fail saving oauth', $error->getCode(), $error->getMessage());
         }
     }
 }

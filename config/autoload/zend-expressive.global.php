@@ -22,4 +22,6 @@ return [
             'template_error' => 'error::error',
         ],
     ],
+
+    'errorException' => false
 ];

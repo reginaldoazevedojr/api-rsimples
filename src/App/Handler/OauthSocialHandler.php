@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Exception\NotGenerateOauthException;
+use App\Exception\TransactionException;
 use App\Service\AuthenticationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,7 +28,6 @@ class OauthSocialHandler implements RequestHandlerInterface
         $this->authSvc = $authSvc;
     }
 
-
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
@@ -41,8 +42,13 @@ class OauthSocialHandler implements RequestHandlerInterface
         /** @var array $socialUser */
         $socialUser = $data['socialUser'];
 
-        $result = $this->authSvc->requestSocialToken($socialUser);
-
-        return new JsonResponse($result['data'], $result['status']);
+        try {
+            $result = $this->authSvc->requestSocialToken($socialUser);
+            return new JsonResponse($result['data'], $result['status']);
+        } catch (TransactionException $error) {
+            return new JsonResponse($error->errorArray());
+        } catch (NotGenerateOauthException $error) {
+            return new JsonResponse($error->errorArray());
+        }
     }
 }

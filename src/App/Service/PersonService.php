@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Person;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use App\Exception\NotSaveException;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -32,7 +32,7 @@ class PersonService
     /**
      * @param array $data
      * @return Person
-     * @throws \Exception
+     * @throws NotSaveException
      */
     public function save(array $data): Person
     {
@@ -50,7 +50,9 @@ class PersonService
         $person->setFirstName($data['firstName']);
         $person->setLastName($data['lastName']);
         $person->setEmail($data['email']);
-        $person->setPhoto($data['photo'] ?? '');
+        if ($data['photo']) {
+            $person->setPhoto($data['photo']);
+        }
         $person->setPhotoUrl($data['photoUrl'] ?? '');
 
         try {
@@ -58,7 +60,7 @@ class PersonService
             $this->entitym->flush();
             return $person;
         } catch (\Exception $error) {
-            throw new \Exception($error->getMessage(), $error->getCode());
+            throw new NotSaveException($error->getMessage(), $error->getCode(), $error->getMessage());
         }
     }
 

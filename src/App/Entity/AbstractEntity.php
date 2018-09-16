@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Exception\NotGenerateEntityArrayException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -137,6 +138,7 @@ abstract class AbstractEntity
     /**
      * @param array $classes
      * @return array
+     * @throws NotGenerateEntityArrayException
      * @throws \Doctrine\Common\Annotations\AnnotationException
      * @throws \ReflectionException
      */
@@ -169,12 +171,20 @@ abstract class AbstractEntity
                     if ($annotation->mappedBy) {
                         continue;
                     }
-                    $result[$property->name] = $this->getValueOneToMany($property->name, $this, $classes);
+                    try {
+                        $result[$property->name] = $this->getValueOneToMany($property->name, $this);
+                    } catch (\Exception $error) {
+                        throw new NotGenerateEntityArrayException('Error generating array');
+                    }
                     continue;
                 }
 
                 if ($annotation instanceof ManyToOne && !in_array($annotation->targetEntity, $classes)) {
-                    $result[$property->name] = $this->getValueManyToOne($property->name, $this, $classes);
+                    try {
+                        $result[$property->name] = $this->getValueManyToOne($property->name, $this, $classes);
+                    } catch (\Exception $error) {
+                        throw new NotGenerateEntityArrayException('Error generating array');
+                    }
                     continue;
                 }
 
@@ -182,7 +192,11 @@ abstract class AbstractEntity
                     if ($annotation->mappedBy) {
                         continue;
                     }
-                    $result[$property->name] = $this->getValueOneToOne($property->name, $this);
+                    try {
+                        $result[$property->name] = $this->getValueOneToOne($property->name, $this);
+                    } catch (\Exception $error) {
+                        throw new NotGenerateEntityArrayException('Error generating array');
+                    }
                     continue;
                 }
 
@@ -190,7 +204,11 @@ abstract class AbstractEntity
                     if ($property->name == 'password') {
                         continue;
                     }
-                    $result [$property->name] = $this->getValueProperty($property->name, $this);
+                    try {
+                        $result[$property->name] = $this->getValueProperty($property->name, $this);
+                    } catch (\Exception $error) {
+                        throw new NotGenerateEntityArrayException('Error generating array');
+                    }
                     continue;
                 }
             }

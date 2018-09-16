@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Exception\AbstractException;
+use App\Exception\NotGenerateOauthException;
 use App\Service\AuthenticationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,8 +38,11 @@ class OauthHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $result = $this->authSvc->requestToken();
-
-        return new JsonResponse($result['data'], $result['status']);
+        try {
+            $result = $this->authSvc->requestToken();
+            return new JsonResponse($result['data'], $result['status']);
+        } catch (NotGenerateOauthException $error) {
+            return new JsonResponse($error->errorArray());
+        }
     }
 }

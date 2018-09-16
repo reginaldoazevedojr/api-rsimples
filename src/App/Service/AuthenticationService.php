@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\Exception\NotGenerateOauthException;
+use App\Exception\TransactionException;
 use Doctrine\ORM\EntityManager;
 use OAuth2\Request;
 use OAuth2\Response;
@@ -54,7 +56,8 @@ class AuthenticationService
     }
 
     /**
-     * @return mixed
+     * @return array
+     * @throws NotGenerateOauthException
      */
     public function requestToken()
     {
@@ -64,17 +67,22 @@ class AuthenticationService
 //        $bCrypt->setCost($COST);
 //        var_dump($bCrypt->create('12345'));exit;
 
-        $this->server->handleTokenRequest(Request::createFromGlobals());
-
-        return [
-            'data' => json_decode($this->server->getResponse()->getResponseBody(), true),
-            'status' => $this->server->getResponse()->getStatusCode()
-        ];
+        try {
+            $this->server->handleTokenRequest(Request::createFromGlobals());
+            return [
+                'data' => json_decode($this->server->getResponse()->getResponseBody(), true),
+                'status' => $this->server->getResponse()->getStatusCode()
+            ];
+        } catch (\Exception $error) {
+            throw new NotGenerateOauthException('Error generating Oauth', $error->getCode(), $error->getMessage());
+        }
     }
 
     /**
      * @param array $userSocial
      * @return array
+     * @throws NotGenerateOauthException
+     * @throws TransactionException
      * @throws \Doctrine\DBAL\ConnectionException
      */
     public function requestSocialToken(array $userSocial)
@@ -82,7 +90,7 @@ class AuthenticationService
         $email = $userSocial['email'];
         $provider = $userSocial['provider'];
         $identity = $userSocial['id'];
-        $platform = ($provider == 'GOOGLE')? 'googleId' : 'facebookId';
+        $platform = ($provider == 'GOOGLE') ? 'googleId' : 'facebookId';
 
         $this->entitym->getConnection()->beginTransaction();
         $this->entitym->getConnection()->setAutoCommit(false);
@@ -95,7 +103,8 @@ class AuthenticationService
             $this->entitym->getConnection()->commit();
         } catch (\Exception $error) {
             $this->entitym->getConnection()->rollBack();
-            throw new \Exception($error->getMessage(), $error->getCode());
+            throw new TransactionException('Error in transaction of oauth request', $error->getCode(),
+                $error->getMessage());
         }
 
         try {
@@ -105,7 +114,7 @@ class AuthenticationService
                 'status' => $this->server->getResponse()->getStatusCode()
             ];
         } catch (\Exception $error) {
-            throw new \Exception('2e2-' . $error->getMessage(), $error->getCode());
+            throw new NotGenerateOauthException('Error generating Oauth', $error->getCode(), $error->getMessage());
         }
     }
 
