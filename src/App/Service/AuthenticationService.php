@@ -62,10 +62,9 @@ class AuthenticationService
     public function requestToken()
     {
 //        $COST = 11;
-//
 //        $bCrypt = new Bcrypt();
 //        $bCrypt->setCost($COST);
-//        var_dump($bCrypt->create('12345'));exit;
+//        dump($bCrypt->create('12345'));exit;
 
         try {
             $this->server->handleTokenRequest(Request::createFromGlobals());

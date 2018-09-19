@@ -20,7 +20,7 @@ abstract class AbstractException extends \Exception
      * @param Throwable|null $previous
      * @param string $error
      */
-    public function __construct(string $message = "", int $code = 0, string $error, ?Throwable $previous = null)
+    public function __construct(string $message = "", int $code = 0, string $error = '', ?Throwable $previous = null)
     {
         $config = require __DIR__ . '/../../../config/config.php';
         if ($config['errorException']) {

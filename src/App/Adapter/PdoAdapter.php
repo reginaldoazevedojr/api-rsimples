@@ -33,11 +33,10 @@ class PdoAdapter extends \OAuth2\Storage\Pdo
     public function __construct($connection, array $config)
     {
         $this->configAuth = $connection;
-
-        parent::__construct($this->configAuth['storage'], $config);
-
         $this->bCrypt = new Bcrypt();
         $this->bCrypt->setCost(self::COST);
+
+        parent::__construct($this->configAuth['storage'], $config);
     }
 
     /**

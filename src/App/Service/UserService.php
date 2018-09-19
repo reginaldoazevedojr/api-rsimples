@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Entity\Funcionario;
 use App\Entity\OauthUsers;
 use App\Entity\Perfil;
+use App\Exception\NotGenerateOauthException;
 use App\Repository\OauthUsersRepository;
 use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\EntityManager;
@@ -35,19 +36,32 @@ class UserService
 
     /**
      * @return OauthUsers
-     * @throws \Exception
+     * @throws NotGenerateOauthException
      */
     public function getUserLogged(): OauthUsers
     {
         $request = Request::createFromGlobals();
-        $token = str_replace('Bearer ', '', $request->headers['AUTHORIZATION']);
-        if ($token == null) {
-            throw new \Exception('Out token session');
+        $authorization = $request->headers['AUTHORIZATION'];
+
+        if (!$authorization) {
+            throw new NotGenerateOauthException('Not found Authorization Header', 99);
         }
+
+        if (stripos($authorization, 'Bearer ') === false) {
+            throw new NotGenerateOauthException('Not found Bearer in authorization', 99);
+        }
+
+        $token = str_replace('Bearer ', '', $authorization);
+
+        if ($token == null) {
+            throw new NotGenerateOauthException('Out token session', 99, 'Not found token in authorization');
+        }
+
         /** @var OauthUsersRepository $repository */
         $repository = $this->entitym->getRepository(OauthUsers::class);
 
         $user = $repository->findbyToken($token);
+
         return $user;
     }
 }

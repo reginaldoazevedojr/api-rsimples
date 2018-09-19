@@ -53,7 +53,9 @@ class PersonService
         if ($data['photo']) {
             $person->setPhoto($data['photo']);
         }
-        $person->setPhotoUrl($data['photoUrl'] ?? '');
+        if ($data['photoUrl']) {
+            $person->setPhotoUrl($data['photoUrl']);
+        }
 
         try {
             $this->entitym->persist($person);

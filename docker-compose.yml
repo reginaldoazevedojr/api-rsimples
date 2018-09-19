@@ -7,7 +7,6 @@ services:
         network_mode: "host"
         ports:
             - "8000:8000"
-            - "9000:9000"
         volumes:
             - .:/app
         command: php -S 0.0.0.0:8000 /app/public/index.php

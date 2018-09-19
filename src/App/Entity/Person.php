@@ -94,7 +94,7 @@ class Person extends AbstractEntity
     /**
      * @return string
      */
-    public function getPhoto(): string
+    public function getPhoto(): ?string
     {
         return $this->photo;
     }
@@ -110,7 +110,7 @@ class Person extends AbstractEntity
     /**
      * @return string
      */
-    public function getPhotoUrl(): string
+    public function getPhotoUrl(): ?string
     {
         return $this->photoUrl;
     }

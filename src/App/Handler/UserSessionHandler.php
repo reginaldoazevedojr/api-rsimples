@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Exception\NotGenerateOauthException;
 use App\Service\UserService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -32,15 +33,19 @@ class UserSessionHandler implements RequestHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws \App\Exception\NotGenerateEntityArrayException
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \ReflectionException
      */
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         try {
             $oauthUser = $this->userSvc->getUserLogged();
             return new JsonResponse($oauthUser->toArray());
-        } catch (\Exception $error) {
-            return new JsonResponse([$error->getMessage()]);
+        } catch (NotGenerateOauthException $error) {
+            return new JsonResponse($error->errorArray());
         }
     }
 }
