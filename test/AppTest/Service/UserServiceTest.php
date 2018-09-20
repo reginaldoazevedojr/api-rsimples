@@ -33,12 +33,15 @@ class UserServiceTest extends AbstractTestCase
         /** @var AuthenticationService $authSvc */
         $authSvc = $this->container->get(AuthenticationService::class);
 
+        $user = require __DIR__ . '/../../data/user.reginaldo.php';
+        $client = require __DIR__ . '/../../data/client.rsimples.php';
+
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['grant_type'] = 'password';
-        $_POST['client_id'] = 'rsimples';
-        $_POST['client_secret'] = 'rsimples';
-        $_POST['username'] = 'reginaldoazevedojr@gmail.com';
-        $_POST['password'] = '12345';
+        $_POST['client_id'] = $client['client_id'];
+        $_POST['client_secret'] = $client['client_secret'];
+        $_POST['username'] = $user['username'];
+        $_POST['password'] = $user['password'];
 
         $result = $authSvc->requestToken();
 
